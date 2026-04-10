@@ -13,8 +13,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Включаем обфускацию даже для дебаг-сборки, чтобы скрыть логику
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     
