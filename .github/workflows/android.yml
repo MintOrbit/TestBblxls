@@ -17,21 +17,10 @@ jobs:
         with:
           gradle-version: 8.5
 
+      # Вот эта самая команда, которая собирает "чистый" релизный APK
       - name: Build Release APK
         run: gradle assembleRelease
           
-      # ЭТОТ ШАГ ЛЕЧИТ ОШИБКУ "ПАКЕТ ПОВРЕЖДЕН"
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        id: sign_app
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        continue-on-error: true # Если нет секретов, билд не упадет
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
