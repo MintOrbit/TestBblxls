@@ -13,8 +13,10 @@ jobs:
 
       - name: Build with Gradle
         run: |
+          # Даем права на запуск, если gradlew существует
           chmod +x gradlew || true
-          ./gradlew :app:assembleDebug || gradle :app:assembleDebug
+          # Запускаем сборку с флагом, который иногда помогает при 403 ошибках
+          gradle :app:assembleDebug --no-daemon --stacktrace
           
       - name: Upload APK
         uses: actions/upload-artifact@v4
