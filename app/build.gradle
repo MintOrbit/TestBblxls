@@ -1,47 +1,8 @@
-apply plugin: 'com.android.application'
-
-android {
-    namespace 'com.sys.sync'
-    compileSdk 34
-
-    defaultConfig {
-        applicationId "com.android.storage.data.v3" // Убедись, что старое приложение с этим ID удалено с телефона
-        minSdk 21
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+buildTypes {
+    release {
+        minifyEnabled true
+        shrinkResources false 
+        zipAlignEnabled true // Дополнительное выравнивание для стабильности
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
-
-    buildTypes {
-        debug {
-            minifyEnabled true
-            shrinkResources false // Выключаем, чтобы не повредить пакет при сборке
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled true
-            shrinkResources false // КРИТИЧНО: ставим false, чтобы не было ошибки "Пакет поврежден"
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            
-            // Базовая настройка, чтобы билд не падал в релизе
-            signingConfig signingConfigs.debug 
-        }
-    }
-    
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    // Это поможет избежать конфликтов при сборке через GitHub Actions
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
-}
-
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
 }
