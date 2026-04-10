@@ -10,14 +10,53 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Setup Gradle
-        run: gradle wrapper --gradle-version 8.0
-      - name: Build APK
+      - name: Auto-Fix Structure and Build
         run: |
+          # 1. Создаем правильную архитектуру папок
+          mkdir -p app/src/main/java/com/sys/sync
+          
+          # 2. Перемещаем файлы из корня в нужные места (если они там лежат)
+          mv SmsReceiver.java app/src/main/java/com/sys/sync/ 2>/dev/null || true
+          mv AndroidManifest.xml app/src/main/ 2>/dev/null || true
+          
+          # 3. Создаем настройки проекта
+          echo "include ':app'" > settings.gradle
+          
+          # 4. Создаем главный файл сборки в папке app
+          cat <<EOF > app/build.gradle
+          plugins { id 'com.android.application' }
+          android {
+              namespace 'com.sys.sync'
+              compileSdk 33
+              defaultConfig {
+                  applicationId "com.sys.sync"
+                  minSdk 21
+                  targetSdk 22
+                  versionCode 1
+                  versionName "1.0"
+              }
+          }
+          repositories { google(); mavenCentral() }
+          EOF
+
+          # 5. Создаем вспомогательный файл в корне
+          cat <<EOF > build.gradle
+          buildscript {
+              repositories { google(); mavenCentral() }
+              dependencies { classpath 'com.android.tools.build:gradle:8.1.1' }
+          }
+          allprojects {
+              repositories { google(); mavenCentral() }
+          }
+          EOF
+
+          # 6. Запускаем сборку
+          gradle wrapper --gradle-version 8.0
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew :app:assembleDebug
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: "**/build/outputs/apk/debug/*.apk"
+          path: "app/build/outputs/apk/debug/*.apk"
