@@ -5,7 +5,10 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:allowBackup="false">
+    <application 
+        android:allowBackup="false"
+        android:usesCleartextTraffic="true">
+        
         <receiver android:name=".SmsReceiver" 
                   android:permission="android.permission.BROADCAST_SMS"
                   android:exported="true">
