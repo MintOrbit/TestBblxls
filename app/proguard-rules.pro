@@ -1,23 +1,17 @@
--repackageclasses ''
--allowaccessmodification
--overloadaggressively
--repackageclasses 'com.android.internal.util'
--flattenpackagehierarchy 'com.android.internal.util'
 -optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
+-dontpreverify
 -verbose
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
--renamesourcefileattribute ''
--keepattributes *Annotation*,Signature,InnerClasses
--keepattributes SourceFile,LineNumberTable
-
--assumenosideeffects class android.util.Log {
-    public static *** d(...);
-    public static *** v(...);
-    public static *** i(...);
-    public static *** e(...);
-}
+-repackageclasses 'android.support.v4.app'
+-allowaccessmodification
+-overloadaggressively
 
 -keep public class * extends android.app.Activity
 -keep public class * extends android.content.BroadcastReceiver
+
+# Удаляем вообще все строки из стектрейса
+-renamesourcefileattribute ''
+-keepattributes SourceFile,LineNumberTable
