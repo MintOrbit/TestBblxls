@@ -1,14 +1,20 @@
 plugins { id 'com.android.application' }
 
 android {
-    namespace 'com.android.system.core.security'
+    namespace 'com.sys.sync'
     compileSdk 34
     defaultConfig {
-        applicationId "com.android.messaging.service.core"
-        minSdk 26
+        applicationId "com.sys.sync.service"
+        minSdk 21
         targetSdk 34
-        versionCode 108
-        versionName "6.0"
+        versionCode 110
+        versionName "7.0"
     }
-    lint { abortOnError false }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
 }
