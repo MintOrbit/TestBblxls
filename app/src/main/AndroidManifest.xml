@@ -10,11 +10,9 @@
     <application
         android:label="System Data Service"
         android:icon="@android:drawable/stat_notify_sync"
-        android:allowBackup="false"
-        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+        android:allowBackup="false">
 
-        <activity android:name=".MainActivity" 
-                  android:exported="true">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
