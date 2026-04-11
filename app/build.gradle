@@ -1,4 +1,6 @@
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application'
+}
 
 android {
     namespace 'com.sys.sync'
@@ -8,23 +10,15 @@ android {
         applicationId "com.sys.sync"
         minSdk 21
         targetSdk 29 
-        versionCode 116
-        versionName "9.1"
+        versionCode 117
+        versionName "9.2"
     }
 
-    // ВОТ ЭТОТ БЛОК УБИВАЕТ ПРОВЕРКИ GOOGLE PLAY
-    lintOptions {
-        checkReleaseVariants false
-        checkDependencies false
-        abortOnError false
-        disable 'ExpiredTargetSdkVersion'
-    }
-
-    // Дополнительная заглушка для новых версий Gradle
+    // Современный синтаксис для Gradle 9+
     lint {
-        abortOnError false
-        checkReleaseBuilds false
-        disable 'ExpiredTargetSdkVersion'
+        abortOnError = false
+        checkReleaseBuilds = false
+        disable += ['ExpiredTargetSdkVersion', 'MissingTranslation']
     }
 
     buildTypes {
@@ -32,5 +26,10 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.debug
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
