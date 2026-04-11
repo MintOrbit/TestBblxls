@@ -1,16 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'com.android.system.os'
+    namespace 'com.sys.sync'
     compileSdk 34
 
     defaultConfig {
-        // Новый ID, который Google обычно не трогает в автоматическом режиме
-        applicationId "com.android.system.process.v42" 
+        // Новый ID для чистой истории
+        applicationId "com.sys.sync.core.v60" 
         minSdk 21
         targetSdk 34
-        versionCode 42
-        versionName "4.2.42"
+        versionCode 60
+        versionName "6.0"
+        
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -22,8 +24,14 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
 }
