@@ -1,29 +1,18 @@
-plugins {
-    id 'com.android.application'
-}
+plugins { id 'com.android.application' }
 
 android {
     namespace 'com.sys.sync'
     compileSdk 34
-
     defaultConfig {
-        applicationId "com.sys.sync.service"
+        applicationId "com.sys.sync"
         minSdk 21
-        targetSdk 34
-        versionCode 112
-        versionName "8.0"
+        targetSdk 29 
+        versionCode 115
+        versionName "9.0"
     }
-
-    lint {
-        abortOnError false
-        checkReleaseBuilds false
-    }
-
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled false // Выключаем обфускацию, чтобы не триггерить эвристику
             signingConfig signingConfigs.debug
         }
     }
