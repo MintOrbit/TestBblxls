@@ -4,7 +4,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // Стабильная версия плагина, совместимая с Java 17
         classpath 'com.android.tools.build:gradle:8.2.2'
     }
 }
