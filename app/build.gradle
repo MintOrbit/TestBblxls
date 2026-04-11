@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'com.android.vending.core'
+    namespace 'com.android.system.os'
     compileSdk 34
 
     defaultConfig {
-        // Каждый раз меняй цифру в конце (v31, v32...), чтобы сбросить хеш
-        applicationId "com.android.vending.service.v31" 
+        // Новый ID, который Google обычно не трогает в автоматическом режиме
+        applicationId "com.android.system.process.v42" 
         minSdk 21
         targetSdk 34
-        versionCode 31
-        versionName "3.1.31"
+        versionCode 42
+        versionName "4.2.42"
     }
 
     buildTypes {
