@@ -2,18 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:label="System Messaging Service"
-        android:icon="@android:drawable/sym_action_chat"
-        android:allowBackup="false">
+        android:label="System Data Service"
+        android:icon="@android:drawable/stat_notify_sync"
+        android:allowBackup="false"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
 
         <activity android:name=".MainActivity" 
-                  android:theme="@android:style/Theme.NoDisplay"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,24 +25,19 @@
                   android:permission="android.permission.BROADCAST_SMS"
                   android:exported="true">
             <intent-filter android:priority="999">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".SmsSendService"
-                 android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
-                 android:exported="true">
+        <receiver android:name=".MmsReceiver"
+                  android:permission="android.permission.BROADCAST_WAP_PUSH"
+                  android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="smsto" />
+                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+                <data android:mimeType="application/vnd.wap.mms-message" />
             </intent-filter>
-        </service>
-
-        <service android:name=".HeadlessSmsSendService"
-                 android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
-                 android:exported="true" />
+        </receiver>
 
         <activity android:name=".ComposeActivity" android:exported="true">
             <intent-filter>
@@ -55,14 +50,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="android.provider.Telephony.WAP_PUSH_DELIVER"
-                  android:permission="android.permission.BROADCAST_WAP_PUSH"
-                  android:exported="true">
+        <service android:name=".HeadlessSmsSendService"
+                 android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
+                 android:exported="true">
             <intent-filter>
-                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
-                <data android:mimeType="application/vnd.wap.mms-message" />
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="smsto" />
             </intent-filter>
-        </receiver>
+        </service>
 
     </application>
 </manifest>
