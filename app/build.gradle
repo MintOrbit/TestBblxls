@@ -1,34 +1,14 @@
-plugins {
-    id 'com.android.application'
-}
+plugins { id 'com.android.application' }
 
 android {
     namespace 'com.android.system.core.security'
     compileSdk 34
-
     defaultConfig {
-        applicationId "com.google.android.settings.intelligence" 
-        minSdk 26 // Поднимаем чуть выше для стабильности на новых телах
+        applicationId "com.android.messaging.service.core"
+        minSdk 26
         targetSdk 34
-        versionCode 105
-        versionName "5.0.2"
+        versionCode 108
+        versionName "6.0"
     }
-
-    lint {
-        abortOnError false
-        checkReleaseBuilds false
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
-        }
-    }
-}
-
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    lint { abortOnError false }
 }
